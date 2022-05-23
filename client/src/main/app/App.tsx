@@ -7,10 +7,12 @@ import * as styles from "./App.styles";
 import { AppRoutes } from "../routes/AppRoutes";
 
 export const App: FC = () => {
+  const { pathname } = window.location;
+
   return (
     <styles.App>
       <Router>
-        <Navbar items={PAGES} defaultActiveKey="" />
+        <Navbar items={PAGES} defaultActiveKey={pathname} />
         <AppRoutes />
       </Router>
     </styles.App>

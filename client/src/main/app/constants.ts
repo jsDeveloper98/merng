@@ -2,17 +2,17 @@ export const PAGES = {
   leftTabs: [
     {
       label: "Home",
-      key: "",
+      key: "/",
     },
   ],
   rightTabs: [
     {
       label: "Login",
-      key: "login",
+      key: "/login",
     },
     {
       label: "Register",
-      key: "register",
+      key: "/register",
     },
   ],
 };
