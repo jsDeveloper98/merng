@@ -1,5 +1,5 @@
+import { FC } from "react";
 import cn from "classnames";
-import { FC, useState } from "react";
 import { Link } from "react-router-dom";
 
 import * as styles from "./Navbar.styles";
@@ -14,12 +14,10 @@ interface NavbarProps {
     leftTabs?: IItem[];
     rightTabs?: IItem[];
   };
-  defaultActiveKey?: string;
+  pathname: string;
 }
 
-export const Navbar: FC<NavbarProps> = ({ items, defaultActiveKey }) => {
-  const [activeKey, setActiveKey] = useState(defaultActiveKey);
-
+export const Navbar: FC<NavbarProps> = ({ items, pathname }) => {
   return (
     <styles.Navbar>
       {items.leftTabs?.length && (
@@ -27,9 +25,8 @@ export const Navbar: FC<NavbarProps> = ({ items, defaultActiveKey }) => {
           {items.leftTabs.map((item) => (
             <li
               key={item.key}
-              onClick={() => setActiveKey(item.key)}
               className={cn("Navbar-list-item", {
-                "Navbar-list-item-active": activeKey === item.key,
+                "Navbar-list-item-active": pathname === item.key,
               })}
             >
               <Link to={item.key}>{item.label}</Link>
@@ -43,9 +40,8 @@ export const Navbar: FC<NavbarProps> = ({ items, defaultActiveKey }) => {
           {items.rightTabs?.map((item) => (
             <li
               key={item.key}
-              onClick={() => setActiveKey(item.key)}
               className={cn("Navbar-list-item", {
-                "Navbar-list-item-active": activeKey === item.key,
+                "Navbar-list-item-active": pathname === item.key,
               })}
             >
               <Link to={item.key}>{item.label}</Link>

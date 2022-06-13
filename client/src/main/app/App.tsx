@@ -1,20 +1,22 @@
 import { FC } from "react";
-import { Navbar } from "hovo-components";
-import { BrowserRouter as Router } from "react-router-dom";
+// import { Navbar } from "hovo-components";
+import { Container } from "semantic-ui-react";
 
 import { PAGES } from "./constants";
 import * as styles from "./App.styles";
+import { Navbar } from "../../components";
+import { useLocation } from "react-router-dom";
 import { AppRoutes } from "../routes/AppRoutes";
 
 export const App: FC = () => {
-  const { pathname } = window.location;
+  let { pathname } = useLocation();
 
   return (
     <styles.App>
-      <Router>
-        <Navbar items={PAGES} defaultActiveKey={pathname} />
+      <Container>
+        <Navbar items={PAGES} pathname={pathname} />
         <AppRoutes />
-      </Router>
+      </Container>
     </styles.App>
   );
 };
