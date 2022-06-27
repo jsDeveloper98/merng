@@ -1,4 +1,5 @@
 import { FC } from "react";
+
 import { Dimmer, Loader, Segment } from "semantic-ui-react";
 
 import * as styles from "./Spinner.styles";

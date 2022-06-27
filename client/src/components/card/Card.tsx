@@ -1,4 +1,5 @@
-import { FC } from "react";
+import { FC, ReactElement } from "react";
+
 import { Card as SUICard, Image } from "semantic-ui-react";
 import { useLocation, useNavigate } from "react-router-dom";
 
@@ -10,8 +11,8 @@ interface CardProps {
   title: string;
   subtitle?: string;
   clickable?: boolean;
+  footer?: ReactElement;
   additionalPathName?: string;
-  footer?: React.ReactElement;
   onClick?: (id: string) => void;
 }
 

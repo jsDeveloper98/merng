@@ -25,85 +25,77 @@ const generateToken = (user: IUser): string => {
 
 class UserC {
   async login({ username, password }: ILoginInput): Promise<IUser> {
-    try {
-      const { errors, isValid } = validateLoginInput({ username, password });
+    const { errors, isValid } = validateLoginInput({ username, password });
 
-      if (!isValid) {
-        throw new UserInputError("Errors", { errors });
-      }
-
-      const user = await User.findOne({ username });
-
-      if (!user) {
-        throw new UserInputError("User not found!", {
-          errors: {
-            general: "User not found",
-          },
-        });
-      }
-
-      const match = await compare(password, user.password);
-
-      if (!match) {
-        throw new UserInputError("Wrong credentials", {
-          errors: {
-            general: "Wrong credentials",
-          },
-        });
-      }
-
-      const token = generateToken(user);
-
-      return {
-        ...user._doc,
-        id: user._id,
-        token,
-      };
-    } catch (err) {
-      throw new Error(err as string);
+    if (!isValid) {
+      throw new UserInputError("Errors", { errors });
     }
+
+    const user = await User.findOne({ username });
+
+    if (!user) {
+      throw new UserInputError("User not found!", {
+        errors: {
+          general: "User not found",
+        },
+      });
+    }
+
+    const match = await compare(password, user.password);
+
+    if (!match) {
+      throw new UserInputError("Wrong credentials", {
+        errors: {
+          general: "Wrong credentials",
+        },
+      });
+    }
+
+    const token = generateToken(user);
+
+    return {
+      ...user._doc,
+      id: user._id,
+      token,
+    };
   }
 
   async register(args: { registerInput: IRegisterInput }): Promise<IUser> {
-    try {
-      let { username, email, password } = args.registerInput;
+    let { username, email, password } = args.registerInput;
 
-      const { errors, isValid } = validateRegisterInput(args.registerInput);
+    const { errors, isValid } = validateRegisterInput(args.registerInput);
 
-      if (!isValid) {
-        throw new UserInputError("Errors", { errors });
-      }
-
-      const user = await User.findOne({ username });
-
-      if (user) {
-        throw new UserInputError("Username is taken", {
-          errors: {
-            username: "This username is taken",
-          },
-        });
-      }
-
-      password = await hash(password, 12);
-
-      const newUser = new User({
-        email,
-        username,
-        password,
-        createdAt: new Date().toISOString(),
-      });
-
-      const res = await newUser.save();
-      const token = generateToken(res);
-
-      return {
-        ...res._doc,
-        id: res._id,
-        token,
-      };
-    } catch (err) {
-      throw new Error(err as string);
+    if (!isValid) {
+      throw new UserInputError("Errors", { errors });
     }
+
+    const user = await User.findOne({ username });
+
+    if (user) {
+      throw new UserInputError("Username is taken", {
+        errors: {
+          username: "This username is taken",
+        },
+      });
+    }
+
+    password = await hash(password, 12);
+
+    const newUser = new User({
+      email,
+      username,
+      password,
+      createdAt: new Date().toISOString(),
+    });
+
+    const res = await newUser.save();
+    const token = generateToken(res);
+
+    return {
+      ...res._doc,
+      id: res._id,
+      token,
+    };
   }
 }
 

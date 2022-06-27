@@ -1,4 +1,5 @@
 import { FC, ReactNode } from "react";
+
 import { Button as SUIButton } from "semantic-ui-react";
 
 import * as styles from "./Button.styles";

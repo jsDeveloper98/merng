@@ -11,6 +11,16 @@ export const Form = styled.div.attrs({
   border-radius: 15px;
   border: 1px solid ${COLORS.WHITE_30};
 
+  .Form {
+    &-field-error {
+      background-color: ${COLORS.ERROR};
+    }
+
+    &-label-error {
+      color: ${COLORS.ERROR};
+    }
+  }
+
   .row {
     display: flex;
     margin-bottom: 10px;

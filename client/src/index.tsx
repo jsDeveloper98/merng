@@ -1,9 +1,11 @@
 import React from "react";
+
 import ReactDOM from "react-dom/client";
 import { BrowserRouter as Router } from "react-router-dom";
 import { ApolloClient, InMemoryCache, ApolloProvider } from "@apollo/client";
 
 import { App } from "./main/app";
+import { AuthProvider } from "./context";
 import reportWebVitals from "./reportWebVitals";
 
 import "semantic-ui-css/semantic.min.css";
@@ -22,9 +24,11 @@ const root = ReactDOM.createRoot(
 root.render(
   <React.StrictMode>
     <ApolloProvider client={client}>
-      <Router>
-        <App />
-      </Router>
+      <AuthProvider>
+        <Router>
+          <App />
+        </Router>
+      </AuthProvider>
     </ApolloProvider>
   </React.StrictMode>
 );
