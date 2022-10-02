@@ -13,10 +13,13 @@ export const useForm = <T>(
     [values]
   );
 
-  const onSubmit = (e: FormEvent): void => {
-    e.preventDefault();
-    callback();
-  };
+  const onSubmit = useCallback(
+    (e: FormEvent): void => {
+      e.preventDefault();
+      callback();
+    },
+    [callback]
+  );
 
   return {
     values,

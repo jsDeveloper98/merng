@@ -5,25 +5,6 @@ import jwtDecode from "jwt-decode";
 import { LOGIN, LOGOUT } from "./constants";
 import { User } from "../graphql/generated/graphql";
 
-interface IAuthContext {
-  user: User | null;
-  logout: () => void;
-  login: (_userData?: User) => void;
-}
-
-interface IAuthReducerAction {
-  payload?: User | null;
-  type: "LOGIN" | "LOGOUT";
-}
-
-interface IAuthReducerState {
-  user: null | User;
-}
-
-interface AuthProviderProps {
-  children?: ReactElement;
-}
-
 const initialState = {
   user: null,
 };
@@ -41,11 +22,26 @@ if (token) {
   }
 }
 
+interface IAuthContext {
+  user: User | null;
+  logout: () => void;
+  login: (_userData?: User) => void;
+}
+
 export const AuthContext = createContext<IAuthContext>({
   user: null,
   login: () => {},
   logout: () => {},
 });
+
+interface IAuthReducerState {
+  user: null | User;
+}
+
+interface IAuthReducerAction {
+  payload?: User | null;
+  type: "LOGIN" | "LOGOUT";
+}
 
 const authReducer = (
   state: IAuthReducerState,
@@ -66,6 +62,10 @@ const authReducer = (
       return state;
   }
 };
+
+interface AuthProviderProps {
+  children?: ReactElement;
+}
 
 export const AuthProvider: FC<AuthProviderProps> = (props) => {
   const [state, dispatch] = useReducer(authReducer, initialState);

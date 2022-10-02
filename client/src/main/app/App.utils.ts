@@ -1,18 +1,9 @@
-import { INavItem } from "../../components";
-
-interface IGetNavItems {
-  leftTabs?: INavItem[];
-  rightTabs?: INavItem[];
-}
-
-interface IOptions {
-  logout: () => void;
-}
+import { IGetNavItemsReturn } from "./App.types";
 
 export const getNavItems = (
   isAuthenticated: boolean,
-  { logout }: IOptions
-): IGetNavItems => {
+  { logout }: { logout: () => void }
+): IGetNavItemsReturn => {
   if (isAuthenticated) {
     return {
       leftTabs: [

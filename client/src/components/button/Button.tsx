@@ -1,4 +1,4 @@
-import { FC, ReactNode } from "react";
+import { FC, memo, ReactNode } from "react";
 
 import { Button as SUIButton } from "semantic-ui-react";
 
@@ -9,10 +9,12 @@ interface ButtonProps {
   children?: ReactNode;
 }
 
-export const Button: FC<ButtonProps> = ({ children, type = "primary" }) => {
+const ButtonComp: FC<ButtonProps> = ({ children, type = "primary" }) => {
   return (
     <styles.Button type={type}>
       <SUIButton>{children}</SUIButton>
     </styles.Button>
   );
 };
+
+export const Button = memo(ButtonComp);

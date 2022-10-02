@@ -1,4 +1,4 @@
-import { FC } from "react";
+import { FC, memo } from "react";
 
 import { Button, Icon, Label } from "semantic-ui-react";
 
@@ -8,7 +8,7 @@ interface CardFooterProps {
   onLikePost: () => void;
 }
 
-export const CardFooter: FC<CardFooterProps> = ({
+const CardFooterComp: FC<CardFooterProps> = ({
   onLikePost,
   likesCount,
   commentsCount,
@@ -31,3 +31,5 @@ export const CardFooter: FC<CardFooterProps> = ({
     </Button>
   );
 };
+
+export const CardFooter = memo(CardFooterComp);

@@ -1,4 +1,4 @@
-import { FC, ReactElement } from "react";
+import { FC, memo, ReactElement } from "react";
 
 import { Card as SUICard, Image } from "semantic-ui-react";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -16,7 +16,7 @@ interface CardProps {
   onClick?: (id: string) => void;
 }
 
-export const Card: FC<CardProps> = ({
+const CardComp: FC<CardProps> = ({
   id,
   text,
   title,
@@ -53,3 +53,5 @@ export const Card: FC<CardProps> = ({
     </styles.Card>
   );
 };
+
+export const Card = memo(CardComp);

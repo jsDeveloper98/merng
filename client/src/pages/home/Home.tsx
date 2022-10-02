@@ -1,10 +1,10 @@
-import { FC } from "react";
+import { FC, useCallback } from "react";
 
 import moment from "moment";
 import { useQuery } from "@apollo/client";
 
 import * as styles from "./Home.styles";
-import { CardFooter } from "./cardFooter";
+import { CardFooter } from "./card-footer";
 import { Card, Spinner } from "../../components";
 import { Post } from "../../graphql/generated/graphql";
 import { FETCH_POSTS } from "../../graphql/queries/postQueries";
@@ -14,13 +14,15 @@ export const Home: FC = () => {
 
   const posts = data?.getPosts;
 
+  const likePost = useCallback(() => {
+    console.log({ likePost });
+  }, []);
+
   if (loading) {
     return <Spinner />;
   }
 
-  const likePost = () => {
-    console.log({ likePost });
-  };
+  console.log("%c posts ===>", "color: #90ee90", posts);
 
   return (
     <styles.Home>

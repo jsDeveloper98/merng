@@ -17,7 +17,6 @@ export const postResolvers = {
       { body }: { body: string },
       context: IContext
     ): Promise<IPost> => {
-      console.log('%c _ ===>', 'color: #90ee90', _);
       const post = await PostController.create(body, context);
 
       context.pubsub.publish("POST_CREATED", {

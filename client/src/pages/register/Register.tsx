@@ -7,24 +7,18 @@ import { useForm } from "../../hooks";
 import { AuthContext } from "../../context";
 import { Spinner, Form } from "../../components";
 import { User } from "../../graphql/generated/graphql";
-import { checkRequiredFields } from "../../utilities";
+import { checkRequiredFields } from "../../utils";
 import { REGISTER } from "../../graphql/mutations/userMutations";
+
 import {
   REGISTER_FORM_ITEMS,
   REGISTER_ERROR_MESSAGE,
   REGISTER_REQUIRED_FIELDS,
   REGISTER_REQUIRED_FIELDS_ERROR_MESSAGE,
-} from "./constants";
+} from "./Register.constants";
+import { IRegisterForm } from "./Register.types";
 
 import * as styles from "./Register.styles";
-
-interface IRegisterForm {
-  email: string;
-  username: string;
-  password: string;
-  errorsHeader: string;
-  confirmPassword: string;
-}
 
 export const Register: FC = () => {
   const navigate = useNavigate();

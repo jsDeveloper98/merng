@@ -7,22 +7,18 @@ import { useForm } from "../../hooks";
 import { AuthContext } from "../../context";
 import { Spinner, Form } from "../../components";
 import { User } from "../../graphql/generated/graphql";
-import { checkRequiredFields } from "../../utilities";
+import { checkRequiredFields } from "../../utils";
 import { LOGIN } from "../../graphql/mutations/userMutations";
+
 import {
   LOGIN_FORM_ITEMS,
   LOGIN_ERROR_MESSAGE,
   LOGIN_REQUIRED_FIELDS,
   LOGIN_REQUIRED_FIELDS_ERROR_MESSAGE,
-} from "./constants";
+} from "./Login.constants";
+import { ILoginForm } from "./Login.types";
 
 import * as styles from "./Login.styles";
-
-interface ILoginForm {
-  username: string;
-  password: string;
-  errorsHeader: string;
-}
 
 export const Login: FC = () => {
   const navigate = useNavigate();

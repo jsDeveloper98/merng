@@ -1,4 +1,4 @@
-import { FC } from "react";
+import { FC, memo } from "react";
 
 import { Dimmer, Loader, Segment } from "semantic-ui-react";
 
@@ -8,7 +8,7 @@ interface SpinnerProps {
   text?: string;
 }
 
-export const Spinner: FC<SpinnerProps> = ({ text = "Loading" }) => {
+const SpinnerComp: FC<SpinnerProps> = ({ text = "Loading" }) => {
   return (
     <styles.Spinner>
       <Segment>
@@ -19,3 +19,5 @@ export const Spinner: FC<SpinnerProps> = ({ text = "Loading" }) => {
     </styles.Spinner>
   );
 };
+
+export const Spinner = memo(SpinnerComp);

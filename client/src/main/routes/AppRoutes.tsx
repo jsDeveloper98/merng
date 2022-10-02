@@ -1,4 +1,4 @@
-import { FC } from "react";
+import { FC, memo } from "react";
 
 import { Routes, Route } from "react-router-dom";
 
@@ -9,7 +9,7 @@ interface AppRoutesProps {
   isAuthenticated: boolean;
 }
 
-export const AppRoutes: FC<AppRoutesProps> = ({ isAuthenticated }) => {
+const AppRoutesComp: FC<AppRoutesProps> = ({ isAuthenticated }) => {
   if (isAuthenticated) {
     return (
       <Routes>
@@ -28,3 +28,5 @@ export const AppRoutes: FC<AppRoutesProps> = ({ isAuthenticated }) => {
     </Routes>
   );
 };
+
+export const AppRoutes = memo(AppRoutesComp);

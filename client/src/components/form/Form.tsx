@@ -1,25 +1,14 @@
-import {
-  FormEvent,
-  ChangeEvent,
-  useCallback,
-  HTMLInputTypeAttribute,
-} from "react";
+import { FormEvent, ChangeEvent, memo, useMemo } from "react";
 
 import cn from "classnames";
 import { Message } from "semantic-ui-react";
 
 import { Button } from "../button";
-import { isEmpty, compact } from "../../utilities";
+import { isEmpty, compact } from "../../utils";
+
+import { IFormItems } from "./Form.types";
 
 import * as styles from "./Form.styles";
-
-interface IFormItems {
-  id: string;
-  label: string;
-  required?: boolean;
-  placeholder?: string;
-  type?: HTMLInputTypeAttribute;
-}
 
 interface FormProps<T> {
   title?: string;
@@ -31,7 +20,7 @@ interface FormProps<T> {
   onChange: (e: ChangeEvent<HTMLInputElement>) => void;
 }
 
-export const Form = <T extends Record<string, any>>({
+const FormComp = <T extends Record<string, any>>({
   items,
   title,
   values,
@@ -40,30 +29,23 @@ export const Form = <T extends Record<string, any>>({
   errors = {},
   buttonText = "Submit",
 }: FormProps<T>) => {
-  const handleSubmit = useCallback(
-    (e: FormEvent): void => {
-      onSubmit(e);
-    },
-    [onSubmit]
-  );
-
-  const generateErrorsList = useCallback((): string[] | undefined => {
-    const errorsList = compact<string | null>(
+  const errorsList = useMemo((): string[] | undefined => {
+    const errList = compact<string | null>(
       Object.entries(errors).map(([key, value]: string[]) =>
         key === "errorsHeader" ? null : value
       )
     );
 
-    if (!errorsList.length) {
+    if (!errList.length) {
       return;
     }
 
-    return errorsList;
+    return errList;
   }, [errors]);
 
   return (
     <styles.Form>
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={onSubmit}>
         {title && <h1>{title}</h1>}
 
         {items.map(({ id, type, placeholder, label, required }) => (
@@ -96,12 +78,10 @@ export const Form = <T extends Record<string, any>>({
       </form>
 
       {!isEmpty(errors) && (
-        <Message
-          error
-          list={generateErrorsList()}
-          header={errors?.errorsHeader}
-        />
+        <Message error list={errorsList} header={errors?.errorsHeader} />
       )}
     </styles.Form>
   );
 };
+
+export const Form = memo(FormComp) as typeof FormComp;

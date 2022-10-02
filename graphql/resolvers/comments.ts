@@ -1,6 +1,6 @@
 import { IContext } from "../../types";
 import { IPost } from "../../types/index";
-import { CommentController } from "../../controllers/CommentController";
+import { CommentController } from "../../controllers";
 
 export interface ICreateComment {
   body: string;

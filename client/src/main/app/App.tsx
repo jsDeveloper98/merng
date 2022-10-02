@@ -3,7 +3,7 @@ import { FC, useContext } from "react";
 // import { Navbar } from "hovo-components";
 import { Container } from "semantic-ui-react";
 
-import { getNavItems } from "./helpers";
+import { getNavItems } from "./App.utils";
 import { Navbar } from "../../components";
 import { AuthContext } from "../../context";
 import { useLocation } from "react-router-dom";

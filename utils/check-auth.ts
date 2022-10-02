@@ -9,12 +9,7 @@ config();
 const { JWT_SECRET } = process.env;
 
 export const checkAuth = (context: IContext): IUser => {
-  console.log({context});
-  
   const authHeader = context.req.headers.authorization;
-
-  console.log({context});
-  
 
   if (authHeader) {
     const token = authHeader.split("Bearer ")[1];

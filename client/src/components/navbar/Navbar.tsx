@@ -1,15 +1,11 @@
-import { FC, MouseEvent, useCallback } from "react";
+import { FC, memo, MouseEvent } from "react";
 
 import cn from "classnames";
 import { Link } from "react-router-dom";
 
-import * as styles from "./Navbar.styles";
+import { INavItem } from "./Navbar.types";
 
-export interface INavItem {
-  key: string;
-  label: string;
-  callback?: () => void;
-}
+import * as styles from "./Navbar.styles";
 
 interface NavbarProps {
   items: {
@@ -19,16 +15,13 @@ interface NavbarProps {
   pathname: string;
 }
 
-export const Navbar: FC<NavbarProps> = ({ items, pathname }) => {
-  const handleLinkClick = useCallback(
-    (e: MouseEvent, callback?: () => void) => {
-      if (callback) {
-        e.preventDefault();
-        callback();
-      }
-    },
-    []
-  );
+const NavbarComp: FC<NavbarProps> = ({ items, pathname }) => {
+  const handleLinkClick = (e: MouseEvent, callback?: () => void) => {
+    if (callback) {
+      e.preventDefault();
+      callback();
+    }
+  };
 
   return (
     <styles.Navbar>
@@ -70,3 +63,5 @@ export const Navbar: FC<NavbarProps> = ({ items, pathname }) => {
     </styles.Navbar>
   );
 };
+
+export const Navbar = memo(NavbarComp);

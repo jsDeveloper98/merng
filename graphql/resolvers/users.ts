@@ -1,6 +1,6 @@
 import { IUser } from "./../../types";
+import { UserController } from "../../controllers";
 import { ILoginInput, IRegisterInput } from "../../types";
-import { UserController } from "../../controllers/UserController";
 
 export const userResolvers = {
   Mutation: {

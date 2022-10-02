@@ -1,5 +1,5 @@
 import { IContext, IPost } from "../../types";
-import { LikeController } from "../../controllers/LikeController";
+import { LikeController } from "../../controllers";
 
 export const likeResolvers = {
   Mutation: {

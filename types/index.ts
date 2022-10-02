@@ -1,6 +1,5 @@
-import e from "express";
-import { PubSub } from "graphql-subscriptions";
 import { Document } from "mongoose";
+import { PubSub } from "graphql-subscriptions";
 
 export interface IRegisterInput {
   username: string;
