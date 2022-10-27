@@ -1,7 +1,8 @@
 import { FC, memo } from "react";
 
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, Navigate } from "react-router-dom";
 
+import { PATHS } from "./constants";
 import { NotFound } from "../../pages/not-found";
 import { Home, Login, Register } from "../../pages";
 
@@ -13,18 +14,18 @@ const AppRoutesComp: FC<AppRoutesProps> = ({ isAuthenticated }) => {
   if (isAuthenticated) {
     return (
       <Routes>
-        <Route path="/" element={<Home />} />;
-        <Route path="*" element={<NotFound />} />;
+        <Route path={PATHS.INDEX} element={<Home />} />;
+        <Route path={PATHS.NOT_FOUND} element={<NotFound />} />;
       </Routes>
     );
   }
 
   return (
     <Routes>
-      <Route path="/" element={<Login />} />;
-      <Route path="/login" element={<Login />} />;
-      <Route path="/register" element={<Register />} />;
-      <Route path="*" element={<NotFound />} />;
+      <Route path={PATHS.INDEX} element={<Navigate to={PATHS.LOGIN} />} />;
+      <Route path={PATHS.LOGIN} element={<Login />} />;
+      <Route path={PATHS.REGISTER} element={<Register />} />;
+      <Route path={PATHS.NOT_FOUND} element={<NotFound />} />;
     </Routes>
   );
 };

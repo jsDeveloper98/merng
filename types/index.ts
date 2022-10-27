@@ -13,6 +13,10 @@ export interface ILoginInput {
   password: string;
 }
 
+export interface IPostInput {
+  body: string;
+}
+
 export interface IComment {
   id?: string;
   body: string;

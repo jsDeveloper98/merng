@@ -21,8 +21,14 @@ export const useForm = <T>(
     [callback]
   );
 
+  const onReset = useCallback(
+    (): void => setValues(initialState),
+    [initialState]
+  );
+
   return {
     values,
+    onReset,
     onChange,
     onSubmit,
   };

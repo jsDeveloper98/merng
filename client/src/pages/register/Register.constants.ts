@@ -28,14 +28,4 @@ export const REGISTER_FORM_ITEMS = [
   },
 ];
 
-export const REGISTER_REQUIRED_FIELDS = [
-  "username",
-  "password",
-  "confirmPassword",
-  "email",
-];
-
 export const REGISTER_ERROR_MESSAGE = "Something went wrong with registration!";
-
-export const REGISTER_REQUIRED_FIELDS_ERROR_MESSAGE =
-  "The required fields are not provided!";

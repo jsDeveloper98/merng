@@ -1,4 +1,4 @@
-import { ILoginInput, IRegisterInput } from "../types";
+import { ILoginInput, IPostInput, IRegisterInput } from "../types";
 
 export const validateRegisterInput = ({
   email,
@@ -53,6 +53,24 @@ export const validateLoginInput = ({
 
   if (password.trim().length < 6) {
     errors.password = "Password must be more than 5 characters!";
+  }
+
+  return {
+    errors,
+    isValid: Object.keys(errors).length < 1,
+  };
+};
+
+export const validatePostInput = ({
+  body,
+}: IPostInput): {
+  isValid: boolean;
+  errors: Partial<IPostInput>;
+} => {
+  const errors = {} as Partial<IPostInput>;
+
+  if (body.trim().length < 6) {
+    errors.body = "Post title must be more than 5 characters!";
   }
 
   return {

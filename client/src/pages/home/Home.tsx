@@ -1,28 +1,68 @@
-import { FC, useCallback } from "react";
+import { FC, useState } from "react";
 
-import moment from "moment";
-import { useQuery } from "@apollo/client";
+import { useMutation } from "@apollo/client";
+
+import { PostList } from "./post-list";
+import { useForm } from "../../hooks";
+import { Form } from "../../components";
+import { CREATE_POST } from "../../graphql/mutations/postMutations";
+import { CREATE_POST_FORM_ITEMS, POST_ERROR_MESSAGE } from "./constants";
 
 import * as styles from "./Home.styles";
-import { CardFooter } from "./card-footer";
-import { Card, Spinner } from "../../components";
-import { Post } from "../../graphql/generated/graphql";
-import { FETCH_POSTS } from "../../graphql/queries/postQueries";
+
+interface IPostForm {
+  body: string;
+  errorsHeader: string;
+}
+
+const getPostFormInitialState = () => {
+  const initialState = {} as Partial<IPostForm>;
+
+  CREATE_POST_FORM_ITEMS.forEach((item) => {
+    initialState[item.id as keyof IPostForm] = "";
+  });
+
+  return initialState;
+};
 
 export const Home: FC = () => {
-  const { loading, data } = useQuery<{ getPosts: Post[] }>(FETCH_POSTS);
+  const [errors, setErrors] = useState<Partial<IPostForm>>({});
+  const { onChange, values, onSubmit, onReset } = useForm<IPostForm>(
+    createPostCallback,
+    getPostFormInitialState()
+  );
 
-  const posts = data?.getPosts;
+  const [createPost] = useMutation(CREATE_POST, {
+    update: (_, result) => {
+      onReset();
+      setErrors({});
+    },
+    onError: (errors) => {
+      let err: Partial<IPostForm> = {
+        errorsHeader: POST_ERROR_MESSAGE,
+      };
 
-  const likePost = useCallback(() => {
-    console.log({ likePost });
-  }, []);
+      if (errors.graphQLErrors.length) {
+        err = {
+          ...(errors.graphQLErrors[0]?.extensions.errors as Partial<IPostForm>),
+          ...err,
+        };
+      }
 
-  if (loading) {
-    return <Spinner />;
+      setErrors({
+        ...err,
+      });
+    },
+    variables: values,
+  });
+
+  // const likePost = () => {
+  //   console.log('likePost');
+  // };
+
+  function createPostCallback(): void {
+    createPost();
   }
-
-  console.log("%c posts ===>", "color: #90ee90", posts);
 
   return (
     <styles.Home>
@@ -30,28 +70,17 @@ export const Home: FC = () => {
         <h1>Recent Posts</h1>
       </header>
 
-      <div className="Home-card-list">
-        {posts?.map(
-          ({ username, createdAt, body, id, likesCount, commentsCount }) => (
-            <Card
-              id={id}
-              key={id}
-              clickable
-              text={body}
-              title={username}
-              additionalPathName="posts"
-              subtitle={moment(createdAt).fromNow()}
-              footer={
-                <CardFooter
-                  onLikePost={likePost}
-                  likesCount={likesCount}
-                  commentsCount={commentsCount}
-                />
-              }
-            />
-          )
-        )}
+      <div className="Home-post-form-wrapper">
+        <Form
+          errors={errors}
+          values={values}
+          onSubmit={onSubmit}
+          onChange={onChange}
+          items={CREATE_POST_FORM_ITEMS}
+        />
       </div>
+
+      <PostList />
     </styles.Home>
   );
 };

@@ -1,23 +1,23 @@
 import { gql } from "@apollo/client";
 
-export const FETCH_POSTS = gql`
-  {
-    getPosts {
+export const CREATE_POST = gql`
+  mutation createPost($body: String!) {
+    createPost(body: $body) {
       id
       body
       username
       createdAt
       likes {
-        username
         id
         createdAt
+        username
       }
       likesCount
       comments {
-        body
-        createdAt
         id
+        body
         username
+        createdAt
       }
       commentsCount
     }

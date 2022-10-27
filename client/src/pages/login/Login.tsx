@@ -7,59 +7,67 @@ import { useForm } from "../../hooks";
 import { AuthContext } from "../../context";
 import { Spinner, Form } from "../../components";
 import { User } from "../../graphql/generated/graphql";
-import { checkRequiredFields } from "../../utils";
 import { LOGIN } from "../../graphql/mutations/userMutations";
-
-import {
-  LOGIN_FORM_ITEMS,
-  LOGIN_ERROR_MESSAGE,
-  LOGIN_REQUIRED_FIELDS,
-  LOGIN_REQUIRED_FIELDS_ERROR_MESSAGE,
-} from "./Login.constants";
-import { ILoginForm } from "./Login.types";
+import { LOGIN_FORM_ITEMS, LOGIN_ERROR_MESSAGE } from "./Login.constants";
 
 import * as styles from "./Login.styles";
+
+interface ILoginForm {
+  username: string;
+  password: string;
+  errorsHeader: string;
+}
+
+const getLoginFormInitialState = () => {
+  const initialState = {} as Partial<ILoginForm>;
+
+  LOGIN_FORM_ITEMS.forEach((item) => {
+    initialState[item.id as keyof ILoginForm] = "";
+  });
+
+  return initialState;
+};
 
 export const Login: FC = () => {
   const navigate = useNavigate();
   const authContext = useContext(AuthContext);
   const [errors, setErrors] = useState<Partial<ILoginForm>>({});
-  const { onChange, values, onSubmit } = useForm<ILoginForm>(login);
+  const { onChange, values, onSubmit, onReset } = useForm<ILoginForm>(
+    loginCallback,
+    getLoginFormInitialState()
+  );
 
-  const [addUser, { loading }] = useMutation<{ login: User }>(LOGIN, {
+  const [login, { loading }] = useMutation<{ login: User }>(LOGIN, {
     update: (_, { data }) => {
       const loginData = data?.login;
 
       authContext.login(loginData);
+      onReset();
+      setErrors({});
       navigate("/");
     },
-    onError: ({ graphQLErrors }) => {
-      let err: Partial<ILoginForm> = {};
+    onError: (errors) => {
+      let err: Partial<ILoginForm> = {
+        errorsHeader: LOGIN_ERROR_MESSAGE,
+      };
 
-      if (graphQLErrors.length) {
-        err = graphQLErrors[0]?.extensions.errors as Partial<ILoginForm>;
-
-        setErrors({
+      if (errors.graphQLErrors.length) {
+        err = {
+          ...(errors.graphQLErrors[0]?.extensions
+            .errors as Partial<ILoginForm>),
           ...err,
-          errorsHeader: LOGIN_ERROR_MESSAGE,
-        });
+        };
       }
+
+      setErrors({
+        ...err,
+      });
     },
+    variables: values,
   });
 
-  function login(): void {
-    const allRequiredFieldsAreProvided = checkRequiredFields(
-      LOGIN_REQUIRED_FIELDS,
-      values
-    );
-
-    if (!allRequiredFieldsAreProvided) {
-      return setErrors({
-        errorsHeader: LOGIN_REQUIRED_FIELDS_ERROR_MESSAGE,
-      });
-    }
-
-    addUser({ variables: values });
+  function loginCallback(): void {
+    login();
   }
 
   if (loading) {

@@ -1,3 +1,6 @@
+
+import { PATHS } from "../routes/constants";
+
 import { IGetNavItemsReturn } from "./App.types";
 
 export const getNavItems = (
@@ -9,7 +12,7 @@ export const getNavItems = (
       leftTabs: [
         {
           label: "Home",
-          key: "/",
+          key: PATHS.INDEX,
         },
       ],
       rightTabs: [
@@ -26,11 +29,11 @@ export const getNavItems = (
     rightTabs: [
       {
         label: "Login",
-        key: "/login",
+        key: PATHS.LOGIN,
       },
       {
         label: "Register",
-        key: "/register",
+        key: PATHS.REGISTER,
       },
     ],
   };

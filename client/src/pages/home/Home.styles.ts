@@ -13,6 +13,10 @@ export const Home = styled.section.attrs({
     color: ${COLORS.WHITE_70};
   }
 
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+
   .Home {
     &-card-list {
       width: 100%;
@@ -20,6 +24,14 @@ export const Home = styled.section.attrs({
       row-gap: 20px;
       padding: 20px 0;
       grid-template-columns: 33.3% 33.3% 33.3%;
+    }
+
+    &-post-form-wrapper {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding-top: 20px;
     }
 
     &-card-btn {

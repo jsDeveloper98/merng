@@ -31,33 +31,37 @@ class UserC {
       throw new UserInputError("Errors", { errors });
     }
 
-    const user = await User.findOne({ username });
+    try {
+      const user = await User.findOne({ username });
 
-    if (!user) {
-      throw new UserInputError("User not found!", {
-        errors: {
-          general: "User not found",
-        },
-      });
+      if (!user) {
+        throw new UserInputError("User not found!", {
+          errors: {
+            general: "User not found",
+          },
+        });
+      }
+
+      const match = await compare(password, user.password);
+
+      if (!match) {
+        throw new UserInputError("Wrong credentials", {
+          errors: {
+            general: "Wrong credentials",
+          },
+        });
+      }
+
+      const token = generateToken(user);
+
+      return {
+        ...user._doc,
+        id: user._id,
+        token,
+      };
+    } catch (err) {
+      throw new Error(err as string);
     }
-
-    const match = await compare(password, user.password);
-
-    if (!match) {
-      throw new UserInputError("Wrong credentials", {
-        errors: {
-          general: "Wrong credentials",
-        },
-      });
-    }
-
-    const token = generateToken(user);
-
-    return {
-      ...user._doc,
-      id: user._id,
-      token,
-    };
   }
 
   async register(args: { registerInput: IRegisterInput }): Promise<IUser> {
@@ -69,33 +73,37 @@ class UserC {
       throw new UserInputError("Errors", { errors });
     }
 
-    const user = await User.findOne({ username });
+    try {
+      const user = await User.findOne({ username });
 
-    if (user) {
-      throw new UserInputError("Username is taken", {
-        errors: {
-          username: "This username is taken",
-        },
+      if (user) {
+        throw new UserInputError("Username is taken", {
+          errors: {
+            username: "This username is taken",
+          },
+        });
+      }
+
+      password = await hash(password, 12);
+
+      const newUser = new User({
+        email,
+        username,
+        password,
+        createdAt: new Date().toISOString(),
       });
+
+      const res = await newUser.save();
+      const token = generateToken(res);
+
+      return {
+        ...res._doc,
+        id: res._id,
+        token,
+      };
+    } catch (err) {
+      throw new Error(err as string);
     }
-
-    password = await hash(password, 12);
-
-    const newUser = new User({
-      email,
-      username,
-      password,
-      createdAt: new Date().toISOString(),
-    });
-
-    const res = await newUser.save();
-    const token = generateToken(res);
-
-    return {
-      ...res._doc,
-      id: res._id,
-      token,
-    };
   }
 }
 

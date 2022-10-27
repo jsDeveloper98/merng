@@ -1,12 +1,19 @@
-import { AuthenticationError } from "apollo-server-core";
+import { AuthenticationError, UserInputError } from "apollo-server-core";
 
 import { Post } from "../models";
 import { IContext, IPost } from "../types";
 import { checkAuth } from "../utils/check-auth";
+import { validatePostInput } from "../utils/validators";
 
 class PostC {
   async create(body: string, context: IContext): Promise<IPost> {
     const user = checkAuth(context);
+
+    const { errors, isValid } = validatePostInput({ body });
+
+    if (!isValid) {
+      throw new UserInputError("Errors", { errors });
+    }
 
     try {
       const newPost = new Post({

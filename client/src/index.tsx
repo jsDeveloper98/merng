@@ -5,6 +5,7 @@ import { BrowserRouter as Router } from "react-router-dom";
 import { ApolloClient, InMemoryCache, ApolloProvider } from "@apollo/client";
 
 import { App } from "./main/app";
+import { getApolloLink } from "./apollo";
 import { AuthProvider } from "./context";
 import reportWebVitals from "./reportWebVitals";
 
@@ -13,7 +14,7 @@ import "semantic-ui-css/semantic.min.css";
 import "./index.css";
 
 const client = new ApolloClient({
-  uri: "http://localhost:5000/graphql",
+  link: getApolloLink(),
   cache: new InMemoryCache(),
 });
 

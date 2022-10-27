@@ -50,14 +50,17 @@ const FormComp = <T extends Record<string, any>>({
 
         {items.map(({ id, type, placeholder, label, required }) => (
           <div key={id} className="row">
-            <label
-              htmlFor={id}
-              className={cn("Form-label", {
-                "Form-label-error": errors[id],
-              })}
-            >
-              {required && "*"} {label}
-            </label>
+            {label && (
+              <label
+                htmlFor={id}
+                className={cn("Form-label", {
+                  "Form-label-error": errors[id],
+                })}
+              >
+                {required && "*"} {label}
+              </label>
+            )}
+
             <input
               id={id}
               name={id}
